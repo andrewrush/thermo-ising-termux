@@ -6,9 +6,11 @@
 
 Симулятор спиновых моделей (Изинг, Гейзенберг) для Termux на Android aarch64. Оптимизирован под ARM64 NEON, с экспериментальной поддержкой OpenCL GPU.
 
-🌐 **Живая демка:** [andrewrush.github.io/thermo-ising-termux/ising_demo.html](https://andrewrush.github.io/thermo-ising-termux/ising_demo.html) — 2D Изинг в браузере (WebGL, управление температурой в реальном времени)
+🌐 **Живая демка:**
+- [andrewrush.github.io/thermo-ising-termux/](https://andrewrush.github.io/thermo-ising-termux/) — 2D Изинг в браузере (WebGL, управление температурой в реальном времени)
+- [andrewrush.github.io/thermo-ising-termux/ising_demo.html](https://andrewrush.github.io/thermo-ising-termux/ising_demo.html) — прямая ссылка на демо
 
-> **Примечание:** GitHub показывает исходный код HTML вместо рендеринга. Используй ссылку выше (GitHub Pages) или открой файл локально: `termux-open ising_demo.html`
+> **Примечание:** GitHub показывает исходный код HTML вместо рендеринга. Используй ссылки выше (GitHub Pages) или открой файл локально: `termux-open ising_demo.html`
 
 ## Что работает
 
@@ -112,10 +114,10 @@ termux-open ising_demo.html
 5. Подождать 1–2 минуты, затем открыть:
 
 ```
-https://andrewrush.github.io/thermo-ising-termux/ising_demo.html
+https://andrewrush.github.io/thermo-ising-termux/
 ```
 
-> Демо использует WebGL и работает в любом современном браузере (Chrome, Firefox, Safari). Файл `ising_demo.html` — standalone (весь JS встроен inline), поэтому работает без внешних зависимостей.
+> Демо использует WebGL и работает в любом современном браузере (Chrome, Firefox, Safari). Файл `ising_demo.html` — standalone (весь JS встроен inline), поэтому работает без внешних зависимостей. Корневой `index.html` автоматически перенаправляет на демо.
 
 ## Научный контекст: термодинамические вычисления
 
