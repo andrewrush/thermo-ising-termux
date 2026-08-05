@@ -6,7 +6,7 @@
 
 Симулятор спиновых моделей (Изинг, Гейзенберг) для Termux на Android aarch64. Оптимизирован под ARM64 NEON, с экспериментальной поддержкой OpenCL GPU.
 
-🌐 **Живая демка:**
+🌐 **Интерактивная симуляция:**
 - [andrewrush.github.io/thermo-ising-termux/](https://andrewrush.github.io/thermo-ising-termux/) — 2D Изинг в браузере (WebGL, управление температурой в реальном времени)
 - [andrewrush.github.io/thermo-ising-termux/ising_demo.html](https://andrewrush.github.io/thermo-ising-termux/ising_demo.html) — прямая ссылка на демо
 
@@ -121,7 +121,7 @@ bash activate_pages.sh
 https://andrewrush.github.io/thermo-ising-termux/
 ```
 
-> Демо использует WebGL и работает в любом современном браузере. Цветовая схема: оранжевый (+1) / синий (−1). Параметр L меняется корректно, T ∈ [0.5, 5.0] с шагом 0.01, Tc(2D) = 2.269. (Chrome, Firefox, Safari). Файл `ising_demo.html` — standalone (весь JS встроен inline), поэтому работает без внешних зависимостей. Корневой `index.html` автоматически перенаправляет на демо.
+> Демо использует WebGL и работает в любом современном браузере. Цветовая схема: оранжевый (+1) / фиолетовый (−1). Параметр L меняется корректно, T ∈ [0.5, 5.0] с шагом 0.01, Tc(2D) = 2.269. (Chrome, Firefox, Safari). Файл `ising_demo.html` — standalone (весь JS встроен inline), поэтому работает без внешних зависимостей. Корневой `index.html` автоматически перенаправляет на демо.
 
 **Если ранее Pages работали через GitHub Actions** (старый workflow), после удаления `.github/workflows/pages.yml` деплой остановился. Скрипт `activate_pages.sh` отключит старый режим и включит branch-based deploy.
 
