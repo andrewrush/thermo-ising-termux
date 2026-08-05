@@ -2,4 +2,3 @@
 *_app
 *.tmp
 build/
-*.csv
