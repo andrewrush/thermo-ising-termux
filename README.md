@@ -1,31 +1,28 @@
 # thermo-ising-termux
 
 Высокопроизводительный **2D симулятор модели Изинга** для Termux на Android aarch64.
-Два алгоритма: **Metropolis** (локальные обновления) и **Wolff** (кластерные обновления).
+Два алгоритма: **Metropolis** и **Wolff** (кластерный).
 
 ## Алгоритмы
 
-| Алгоритм | Файл | Скорость около Tc | Критическое замедление |
-|---|---|---|---|
-| Metropolis | `ising.c` | Медленно | z ≈ 2 (корреляционное время ~ L^2) |
-| Wolff | `wolff.c` | Быстро | z ≈ 0 (корреляционное время ~ const) |
+| Алгоритм | Файл | Скорость | Крит. замедление | Рекомендация |
+|---|---|---|---|---|
+| Metropolis | `ising.c` | Быстро (2.5с/10M) | z ≈ 2 | L <= 64 |
+| Wolff | `wolff.c` | Медленно (12с/100k) | z ≈ 0 | L >= 64, T ≈ Tc |
 
-## Особенности
+## Скрипты
 
-- **2D решётка** LxL с периодическими граничными условиями
-- Инициализация через аппаратный RNG SoC (`/dev/urandom`)
-- Быстрый XorShift128+ для шагов симуляции
-- **Температура батареи** через `termux-battery-status` (обход SELinux)
-- **CLI-параметры**: `./ising_app [L] [T] [steps] [csv]` и `./wolff_app [L] [T] [steps] [csv]`
-- **Статистика**: `<M>`, `<|M|>`, `<E>`, восприимчивость `chi`, теплоёмкость `C`
-- **CSV-режим** для серийных запусков
-- **Сканирование фазового перехода** `scan_phase.sh`
-- **Параллельное сканирование** `parallel_scan.sh`
-- **Визуализация** `plot_phase.sh` через gnuplot
-- **Полный pipeline** `run_all.sh`
-- **Сравнение алгоритмов** `compare_algos.sh`
-- **Multi-L scan** `multi_L_scan.sh` (L=32,64,128)
-- Оптимизация под ARM64 NEON (`-march=armv8-a+simd`)
+| Скрипт | Описание |
+|---|---|
+| `scan_phase.sh` | Сканирование T=1..4 через Metropolis |
+| `wolff_scan.sh` | Сканирование через Wolff (быстрее для больших L) |
+| `parallel_scan.sh` | Параллельный Metropolis-скан |
+| `multi_L_scan.sh` | Сканирование для L=32,64,128 |
+| `compare_algos.sh` | Сравнение Metropolis vs Wolff |
+| `plot_phase.sh` | ASCII-графики для одного L |
+| `plot_multi.sh` | Сравнительные графики для разных L |
+| `fss_analysis.sh` | Анализ конечно-размерного скалирования |
+| `run_all.sh` | Полный pipeline |
 
 ## Сборка
 
@@ -36,22 +33,28 @@ make
 ## Запуск
 
 ```bash
-# Metropolis (по умолчанию: L=64, T=2.269, 10M steps)
+# Metropolis (L=64, T=2.269, 10M)
 ./ising_app
 
-# Wolff (по умолчанию: L=64, T=2.269, 100k clusters)
-./wolff_app
+# Wolff (L=64, T=2.269, 5k кластеров)
+./wolff_app 64 2.269 5000
 
 # Сравнение алгоритмов
-chmod +x compare_algos.sh
 ./compare_algos.sh 64 2.269
 
 # Multi-L scan
-chmod +x multi_L_scan.sh
-./multi_L_scan.sh
+./multi_L_scan.sh 5000000
+
+# Wolff-скан (рекомендуется для L=128)
+./wolff_scan.sh 128 10000
+
+# FSS-анализ
+./fss_analysis.sh
+
+# Сравнительные графики
+./plot_multi.sh
 
 # Полный pipeline
-chmod +x run_all.sh
 ./run_all.sh 64 5000000
 ```
 
@@ -62,7 +65,3 @@ git add .
 git commit -m "feat: your message"
 git push
 ```
-
-## Ограничения
-
-- `termux-sensor` недоступен в Play Store-версии Termux

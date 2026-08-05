@@ -1,18 +1,15 @@
 #!/bin/bash
 # multi_L_scan.sh — сравнение фазовых переходов для разных L
-# Использование: ./multi_L_scan.sh
+# Использование: ./multi_L_scan.sh [steps]
 
-STEPS=5000000
+STEPS=${1:-5000000}
 
-echo "[*] Multi-L phase scan: L=32, 64, 128"
+echo "[*] Multi-L phase scan: L=32, 64, 128, steps=$STEPS"
 for L in 32 64 128; do
     OUT="phase_L${L}.csv"
     echo ""
     echo "=== L=$L ==="
     ./scan_phase.sh "$L" "$STEPS"
-    mv "phase_L${L}.csv" "${OUT}.tmp" 2>/dev/null
-    ./scan_phase.sh "$L" "$STEPS"
-    mv "phase_L${L}.csv" "$OUT"
 done
 
 echo ""
