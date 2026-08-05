@@ -6,9 +6,9 @@
 
 Симулятор спиновых моделей (Изинг, Гейзенберг) для Termux на Android aarch64. Оптимизирован под ARM64 NEON, с экспериментальной поддержкой OpenCL GPU.
 
-🌐 **Живая демка:** [andrewrush.github.io/thermo-ising-termux](https://andrewrush.github.io/thermo-ising-termux/) — 2D Изинг в браузере (WebGL, управление температурой в реальном времени)
+🌐 **Живая демка:** [andrewrush.github.io/thermo-ising-termux/ising_demo.html](https://andrewrush.github.io/thermo-ising-termux/ising_demo.html) — 2D Изинг в браузере (WebGL, управление температурой в реальном времени)
 
-> **Примечание:** GitHub показывает исходный код HTML вместо рендеринга. Используй ссылку выше (GitHub Pages) или открой файл локально: `termux-open demo/index.html`
+> **Примечание:** GitHub показывает исходный код HTML вместо рендеринга. Используй ссылку выше (GitHub Pages) или открой файл локально: `termux-open ising_demo.html`
 
 ## Что работает
 
@@ -94,32 +94,28 @@ make
 
 ## WebGL-демо в браузере
 
-Интерактивная 2D-модель Изинга с управлением температурой в реальном времени.
+Интерактивная 2D-модель Изинга с управлением температурой в реальном времени. Все вычисления выполняются на клиенте — сервер только раздаёт статику.
 
 **Локальный запуск (без интернета):**
 ```bash
-termux-open demo/index.html
+termux-open ising_demo.html
 ```
 
 **GitHub Pages (хостинг):**
 
-Для постоянного URL (`https://andrewrush.github.io/thermo-ising-termux/`):
+Для постоянного URL (`https://andrewrush.github.io/thermo-ising-termux/ising_demo.html`):
 
 1. Открыть https://github.com/andrewrush/thermo-ising-termux/settings/pages
-2. **Source:** GitHub Actions
-3. Убедиться, что workflow `.github/workflows/pages.yml` активен
-4. Сделать push в `main` (или запустить workflow вручную)
+2. **Source:** Deploy from a branch
+3. **Branch:** `main` / `/(root)`
+4. Нажать **Save**
 5. Подождать 1–2 минуты, затем открыть:
 
 ```
-https://andrewrush.github.io/thermo-ising-termux/
+https://andrewrush.github.io/thermo-ising-termux/ising_demo.html
 ```
 
-> Демо использует WebGL и работает в любом современном браузере (Chrome, Firefox, Safari). Все вычисления выполняются на клиенте — сервер только раздаёт статику.
-
-## GitHub Actions
-
-Репозиторий содержит настроенный workflow `.github/workflows/pages.yml`, который автоматически деплоит WebGL-демо на GitHub Pages при каждом push в `main`.
+> Демо использует WebGL и работает в любом современном браузере (Chrome, Firefox, Safari). Файл `ising_demo.html` — standalone (весь JS встроен inline), поэтому работает без внешних зависимостей.
 
 ## Научный контекст: термодинамические вычисления
 
