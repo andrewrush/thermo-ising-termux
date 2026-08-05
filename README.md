@@ -6,7 +6,9 @@
 
 Симулятор спиновых моделей (Изинг, Гейзенберг) для Termux на Android aarch64. Оптимизирован под ARM64 NEON, с экспериментальной поддержкой OpenCL GPU.
 
-🌐 **Живая демка:** [andrewrush.github.io/thermo-ising-termux](https://andrewrush.github.io/thermo-ising-termux) — 2D Изинг в браузере (WebGL, управление температурой в реальном времени)
+🌐 **Живая демка:** [andrewrush.github.io/thermo-ising-termux](https://andrewrush.github.io/thermo-ising-termux/) — 2D Изинг в браузере (WebGL, управление температурой в реальном времени)
+
+> **Примечание:** GitHub показывает исходный код HTML вместо рендеринга. Используй ссылку выше (GitHub Pages) или открой файл локально: `termux-open demo/index.html`
 
 ## Что работает
 
@@ -89,6 +91,35 @@ make
 **Может ли телефон считать серьёзную науку?**
 
 Да. Android — это 8-ядерный ARM64-компьютер с аппаратным генератором случайных чисел. Мы используем `/dev/urandom` (генератор случайных чисел на чипе) для инициализации симуляций — телефон буквально использует свой тепловой шум для научного эксперимента.
+
+## WebGL-демо в браузере
+
+Интерактивная 2D-модель Изинга с управлением температурой в реальном времени.
+
+**Локальный запуск (без интернета):**
+```bash
+termux-open demo/index.html
+```
+
+**GitHub Pages (хостинг):**
+
+Для постоянного URL (`https://andrewrush.github.io/thermo-ising-termux/`):
+
+1. Открыть https://github.com/andrewrush/thermo-ising-termux/settings/pages
+2. **Source:** GitHub Actions
+3. Убедиться, что workflow `.github/workflows/pages.yml` активен
+4. Сделать push в `main` (или запустить workflow вручную)
+5. Подождать 1–2 минуты, затем открыть:
+
+```
+https://andrewrush.github.io/thermo-ising-termux/
+```
+
+> Демо использует WebGL и работает в любом современном браузере (Chrome, Firefox, Safari). Все вычисления выполняются на клиенте — сервер только раздаёт статику.
+
+## GitHub Actions
+
+Репозиторий содержит настроенный workflow `.github/workflows/pages.yml`, который автоматически деплоит WebGL-демо на GitHub Pages при каждом push в `main`.
 
 ## Научный контекст: термодинамические вычисления
 
