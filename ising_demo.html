@@ -16,14 +16,14 @@ body {
     min-height: 100vh;
     padding: 20px;
 }
-h1 { color: #58a6ff; margin-bottom: 8px; font-size: 1.8rem; }
+h1 { color: #ff9f43; margin-bottom: 8px; font-size: 1.8rem; }
 .subtitle { color: #8b949e; margin-bottom: 20px; font-size: 0.95rem; }
 #canvas-container {
     position: relative;
     border: 2px solid #30363d;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 0 40px rgba(88,166,255,0.15);
+    box-shadow: 0 0 40px rgba(255,159,67,0.15);
 }
 canvas { display: block; image-rendering: pixelated; }
 #controls {
@@ -43,9 +43,9 @@ canvas { display: block; image-rendering: pixelated; }
 label { font-size: 0.85rem; color: #8b949e; }
 input[type="range"] {
     width: 160px;
-    accent-color: #58a6ff;
+    accent-color: #ff9f43;
 }
-.val { color: #58a6ff; font-weight: 600; font-family: monospace; }
+.val { color: #ff9f43; font-weight: 600; font-family: monospace; }
 button {
     background: #238636;
     color: #fff;
@@ -57,8 +57,8 @@ button {
     transition: background 0.2s;
 }
 button:hover { background: #2ea043; }
-button#pauseBtn { background: #1f6feb; }
-button#pauseBtn:hover { background: #388bfd; }
+button#pauseBtn { background: #5f27cd; }
+button#pauseBtn:hover { background: #7b4fe0; }
 button#resetBtn { background: #da3633; }
 button#resetBtn:hover { background: #f85149; }
 #stats {
@@ -75,7 +75,7 @@ button#resetBtn:hover { background: #f85149; }
     color: #484f58;
     font-size: 0.8rem;
 }
-a { color: #58a6ff; text-decoration: none; }
+a { color: #ff9f43; text-decoration: none; }
 a:hover { text-decoration: underline; }
 </style>
 </head>
@@ -221,8 +221,8 @@ uniform sampler2D u_tex;
 void main() {
     vec4 c = texture2D(u_tex, v_uv);
     // c.r = 1 for spin +1, c.r = 0 for spin -1
-    vec3 up = vec3(0.345, 0.655, 1.0);    // #58a6ff
-    vec3 down = vec3(0.545, 0.545, 0.545); // #8b949e
+    vec3 up = vec3(1.0, 0.624, 0.263);    // #ff9f43 orange
+    vec3 down = vec3(0.373, 0.153, 0.804); // #5f27cd violet
     vec3 col = mix(down, up, c.r);
     gl_FragColor = vec4(col, 1.0);
 }`;
@@ -284,7 +284,7 @@ function recreate() {
 
 // Event listeners
 tSlider.addEventListener('input', () => { T = parseFloat(tSlider.value); tVal.textContent = T.toFixed(2); });
-lSlider.addEventListener('change', () => { lVal.textContent = L; recreate(); });
+lSlider.addEventListener('change', () => { lVal.textContent = lSlider.value; recreate(); });
 sSlider.addEventListener('input', () => { speed = parseInt(sSlider.value); sVal.textContent = ['медленно','норм','быстро','очень быстро','макс'][speed]; });
 pauseBtn.addEventListener('click', () => { running = !running; pauseBtn.textContent = running ? '⏸ Пауза' : '▶ Продолжить'; });
 resetBtn.addEventListener('click', () => { initSpins(); updateTexture(); });
