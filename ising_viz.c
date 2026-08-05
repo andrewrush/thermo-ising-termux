@@ -90,16 +90,15 @@ float energy() {
 
 // === ASCII-визуализация ===
 void print_lattice_ascii() {
-    // Используем половинные блоки для компактности: ▄ (U+2584) = spin +1, ░ (U+2591) = spin -1
-    // Или полные: █ = +1, ░ = -1
-    printf("\033[H"); // move cursor to home (clear-like)
+    printf("\033[2J\033[H"); // clear + home
     for (int i = 0; i < L; i++) {
         for (int j = 0; j < L; j++) {
-            printf("%s", get(i,j) > 0 ? "█" : "░");
+            printf("%s", get(i,j) > 0 ? "\u2588" : "\u2591");
         }
         printf("\n");
     }
     printf("M=%+.3f E=%+.3f\n", magnetization(), energy());
+    fflush(stdout);
 }
 
 void metropolis(double T, int steps, int print_interval, int csv_mode, int ascii_mode, int ascii_interval) {
@@ -132,7 +131,7 @@ void metropolis(double T, int steps, int print_interval, int csv_mode, int ascii
 
         if (ascii_mode && ascii_interval > 0 && step > 0 && step % ascii_interval == 0) {
             print_lattice_ascii();
-            usleep(50000); // 50ms для анимации
+            usleep(50000);
         }
 
         if (!csv_mode && !ascii_mode && print_interval > 0 && step > 0 && step % print_interval == 0) {
@@ -141,7 +140,7 @@ void metropolis(double T, int steps, int print_interval, int csv_mode, int ascii
         }
     }
 
-    if (sample_count > 0) {
+    if (sample_count > 0 && !ascii_mode) {
         double avg_M    = sum_M    / sample_count;
         double avg_absM = sum_absM / sample_count;
         double avg_E    = sum_E    / sample_count;
@@ -154,7 +153,7 @@ void metropolis(double T, int steps, int print_interval, int csv_mode, int ascii
             printf("%.4f,%.6f,%.6f,%.6f,%.6f,%.4f,%.4f,%.2f\n",
                    T, avg_M, avg_absM, avg_E, avg_M2, chi, C,
                    (accepted * 100.0) / steps);
-        } else if (!ascii_mode) {
+        } else {
             printf("[*] Averages (after thermalization):\n");
             printf("    <M>    = %+.6f\n", avg_M);
             printf("    <|M|>  = %+.6f\n", avg_absM);
@@ -173,6 +172,7 @@ int main(int argc, char *argv[]) {
     int csv   = 0;
     int ascii = 0;
     int ascii_interval = steps / 50;
+    if (ascii_interval < 100) ascii_interval = 100;
 
     for (int i = 4; i < argc; i++) {
         if (strcmp(argv[i], "csv") == 0) csv = 1;
@@ -198,7 +198,7 @@ int main(int argc, char *argv[]) {
         spins[i] = (next_rand() % 2) ? 1 : -1;
 
     if (ascii) {
-        printf("\033[2J"); // clear screen
+        printf("\033[2J");
         printf("[*] ASCII visualization mode. Press Ctrl+C to stop.\n");
         print_lattice_ascii();
     } else if (!csv) {
@@ -209,7 +209,9 @@ int main(int argc, char *argv[]) {
     int print_interval = (csv || ascii) ? 0 : (steps / 10);
     metropolis(T, steps, print_interval, csv, ascii, ascii_interval);
 
-    if (!csv && !ascii) {
+    if (ascii) {
+        print_lattice_ascii();
+    } else if (!csv) {
         timer_stop();
         printf("[*] Final   M = %+.4f, E = %+.4f\n", magnetization(), energy());
         print_temp();
