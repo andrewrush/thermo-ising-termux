@@ -12,7 +12,10 @@
 - **Промежуточный вывод** каждые 10%
 - **Статистика**: `<M>`, `<|M|>`, `<E>`, восприимчивость `chi`, теплоёмкость `C`
 - **CSV-режим** для серийных запусков
-- **Скрипт сканирования** `scan_phase.sh` для исследования фазового перехода
+- **Скрипт сканирования** `scan_phase.sh`
+- **Параллельное сканирование** `parallel_scan.sh` (все T одновременно)
+- **Визуализация** `plot_phase.sh` через gnuplot (ASCII-графики в терминале)
+- **Полный pipeline** `run_all.sh`: scan -> plot -> git commit -> push
 - Оптимизация под ARM64 NEON (`-march=armv8-a+simd`)
 - Учтены особенности Termux: `gcc` = `clang`, `ldd` -> `readelf`
 
@@ -44,6 +47,19 @@ readelf -d $PWD/ising_app | grep NEEDED
 chmod +x scan_phase.sh
 ./scan_phase.sh 64 5000000
 
+# Параллельное сканирование (быстрее!)
+chmod +x parallel_scan.sh
+./parallel_scan.sh 64 5000000
+
+# Визуализация (установи gnuplot)
+pkg install gnuplot
+chmod +x plot_phase.sh
+./plot_phase.sh phase_L64.csv
+
+# Полный pipeline: scan + plot + git push
+chmod +x run_all.sh
+./run_all.sh 64 5000000
+
 # С wakelock (чтобы Android не убил процесс)
 termux-wake-lock
 ./ising_app
@@ -60,7 +76,7 @@ T,<M>,<|M|>,<E>,<M2>,chi,C,accept_pct
 
 ```bash
 git add .
-git commit -m "feat: CSV mode, phase scan script, clean structure"
+git commit -m "feat: your message"
 git push
 ```
 
