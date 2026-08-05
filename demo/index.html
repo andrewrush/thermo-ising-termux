@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2D Ising — WebGL Demo</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    background: #0d1117;
+    color: #c9d1d9;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+h1 { color: #58a6ff; margin-bottom: 8px; font-size: 1.8rem; }
+.subtitle { color: #8b949e; margin-bottom: 20px; font-size: 0.95rem; }
+#canvas-container {
+    position: relative;
+    border: 2px solid #30363d;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 40px rgba(88,166,255,0.15);
+}
+canvas { display: block; image-rendering: pixelated; }
+#controls {
+    margin-top: 20px;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 140px;
+}
+label { font-size: 0.85rem; color: #8b949e; }
+input[type="range"] {
+    width: 160px;
+    accent-color: #58a6ff;
+}
+.val { color: #58a6ff; font-weight: 600; font-family: monospace; }
+button {
+    background: #238636;
+    color: #fff;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: background 0.2s;
+}
+button:hover { background: #2ea043; }
+button#pauseBtn { background: #1f6feb; }
+button#pauseBtn:hover { background: #388bfd; }
+button#resetBtn { background: #da3633; }
+button#resetBtn:hover { background: #f85149; }
+#stats {
+    margin-top: 16px;
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: #8b949e;
+    display: flex;
+    gap: 24px;
+}
+.stat { color: #56d364; }
+#formula {
+    margin-top: 16px;
+    color: #484f58;
+    font-size: 0.8rem;
+}
+a { color: #58a6ff; text-decoration: none; }
+a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<h1>🔥 2D Модель Изинга — WebGL</h1>
+<div class="subtitle">Интерактивная симуляция фазового перехода в браузере</div>
+
+<div id="canvas-container">
+    <canvas id="glcanvas" width="512" height="512"></canvas>
+</div>
+
+<div id="controls">
+    <div class="control-group">
+        <label>Температура T: <span class="val" id="tVal">2.27</span></label>
+        <input type="range" id="tSlider" min="0.5" max="5.0" step="0.01" value="2.27">
+    </div>
+    <div class="control-group">
+        <label>Размер L: <span class="val" id="lVal">128</span></label>
+        <input type="range" id="lSlider" min="32" max="256" step="32" value="128">
+    </div>
+    <div class="control-group">
+        <label>Скорость: <span class="val" id="sVal">1</span></label>
+        <input type="range" id="sSlider" min="0" max="4" step="1" value="1">
+    </div>
+    <button id="pauseBtn">⏸ Пауза</button>
+    <button id="resetBtn">↺ Сброс</button>
+</div>
+
+<div id="stats">
+    <span>Шаг: <span class="stat" id="stepStat">0</span></span>
+    <span>M: <span class="stat" id="mStat">0.000</span></span>
+    <span>E: <span class="stat" id="eStat">0.000</span></span>
+    <span>Accept: <span class="stat" id="aStat">0%</span></span>
+</div>
+
+<div id="formula">
+    <a href="https://github.com/andrewrush/thermo-ising-termux">github.com/andrewrush/thermo-ising-termux</a> · 
+    Гамильтониан: ℋ = −J Σ⟨i,j⟩ SᵢSⱼ · Tc(2D) = 2.269
+</div>
+
+<script src="ising.js"></script>
+</body>
+</html>
