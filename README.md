@@ -10,6 +10,12 @@
 - [andrewrush.github.io/thermo-ising-termux/](https://andrewrush.github.io/thermo-ising-termux/) — 2D Изинг в браузере (WebGL, управление температурой в реальном времени)
 - [andrewrush.github.io/thermo-ising-termux/ising_demo.html](https://andrewrush.github.io/thermo-ising-termux/ising_demo.html) — прямая ссылка на демо
 
+<p align="center">
+  <img src="assets/ising_demo.gif" alt="2D Ising model simulation" width="60%">
+</p>
+
+> Параметры симуляции: L = 32, T = 2.92 (> Tc), максимальная скорость. Оранжевый = спин +1, фиолетовый = спин −1.
+
 > **Примечание:** GitHub показывает исходный код HTML вместо рендеринга. Используй ссылки выше (GitHub Pages) или открой файл локально: `termux-open ising_demo.html`
 
 ## Что работает
