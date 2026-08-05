@@ -105,19 +105,25 @@ termux-open ising_demo.html
 
 **GitHub Pages (хостинг):**
 
-Для постоянного URL (`https://andrewrush.github.io/thermo-ising-termux/ising_demo.html`):
+Если Pages ещё не активированы — запусти из папки проекта:
+```bash
+bash activate_pages.sh
+```
 
+Или вручную через браузер:
 1. Открыть https://github.com/andrewrush/thermo-ising-termux/settings/pages
 2. **Source:** Deploy from a branch
 3. **Branch:** `main` / `/(root)`
 4. Нажать **Save**
-5. Подождать 1–2 минуты, затем открыть:
 
+После активации демо доступно по адресу:
 ```
 https://andrewrush.github.io/thermo-ising-termux/
 ```
 
 > Демо использует WebGL и работает в любом современном браузере (Chrome, Firefox, Safari). Файл `ising_demo.html` — standalone (весь JS встроен inline), поэтому работает без внешних зависимостей. Корневой `index.html` автоматически перенаправляет на демо.
+
+**Если ранее Pages работали через GitHub Actions** (старый workflow), после удаления `.github/workflows/pages.yml` деплой остановился. Скрипт `activate_pages.sh` отключит старый режим и включит branch-based deploy.
 
 ## Научный контекст: термодинамические вычисления
 
