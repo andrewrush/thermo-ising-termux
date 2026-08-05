@@ -1,28 +1,16 @@
 # thermo-ising-termux
 
-Высокопроизводительный **2D симулятор модели Изинга** для Termux на Android aarch64.
-Два алгоритма: **Metropolis** и **Wolff** (кластерный).
+Высокопроизводительный **симулятор спиновых моделей** для Termux на Android aarch64.
 
-## Алгоритмы
+## Модели
 
-| Алгоритм | Файл | Скорость | Крит. замедление | Рекомендация |
+| Модель | Файл | Размерность | Tc | Алгоритм |
 |---|---|---|---|---|
-| Metropolis | `ising.c` | Быстро (2.5с/10M) | z ≈ 2 | L <= 64 |
-| Wolff | `wolff.c` | Медленно (12с/100k) | z ≈ 0 | L >= 64, T ≈ Tc |
-
-## Скрипты
-
-| Скрипт | Описание |
-|---|---|
-| `scan_phase.sh` | Сканирование T=1..4 через Metropolis |
-| `wolff_scan.sh` | Сканирование через Wolff (быстрее для больших L) |
-| `parallel_scan.sh` | Параллельный Metropolis-скан |
-| `multi_L_scan.sh` | Сканирование для L=32,64,128 |
-| `compare_algos.sh` | Сравнение Metropolis vs Wolff |
-| `plot_phase.sh` | ASCII-графики для одного L |
-| `plot_multi.sh` | Сравнительные графики для разных L |
-| `fss_analysis.sh` | Анализ конечно-размерного скалирования |
-| `run_all.sh` | Полный pipeline |
+| 2D Ising | `ising.c` | 2D | 2.269 | Metropolis |
+| 2D Ising (Wolff) | `wolff.c` | 2D | 2.269 | Wolff cluster |
+| 3D Ising | `ising3d.c` | 3D | 4.51 | Metropolis |
+| 3D Heisenberg | `heisenberg.c` | 3D | 1.44 | Metropolis (continuous spins) |
+| 2D Ising (GPU) | `gpu_wrapper.c` | 2D | 2.269 | OpenCL checkerboard |
 
 ## Сборка
 
@@ -30,31 +18,38 @@
 make
 ```
 
+Если OpenCL не установлен, `gpu_app` пропустится с подсказкой:
+```bash
+pkg install ocl-icd opencl-headers
+```
+
 ## Запуск
 
 ```bash
-# Metropolis (L=64, T=2.269, 10M)
-./ising_app
+# 2D Ising
+./ising_app 64 2.269 10000000
 
-# Wolff (L=64, T=2.269, 5k кластеров)
+# 2D Wolff
 ./wolff_app 64 2.269 5000
 
-# Сравнение алгоритмов
-./compare_algos.sh 64 2.269
+# 3D Ising
+./ising3d_app 16 4.51 2000000
 
-# Multi-L scan
-./multi_L_scan.sh 5000000
+# 3D Heisenberg (непрерывные спины на сфере S^2)
+./heisenberg_app 16 1.44 2000000
 
-# Wolff-скан (рекомендуется для L=128)
-./wolff_scan.sh 128 10000
+# GPU 2D Ising (экспериментально)
+./gpu_app 64 2.269 1000000
+./gpu_app 64 2.269 1000000 cpu  # CPU fallback
 
-# FSS-анализ
-./fss_analysis.sh
+# Сканирование
+./scan3d.sh 16 2000000
+./scan_heisenberg.sh 16 2000000
 
-# Сравнительные графики
-./plot_multi.sh
+# Полный бенчмарк
+./benchmark.sh
 
-# Полный pipeline
+# Полный pipeline (2D)
 ./run_all.sh 64 5000000
 ```
 
@@ -62,6 +57,11 @@ make
 
 ```bash
 git add .
-git commit -m "feat: your message"
+git commit -m "feat: 3D Ising, Heisenberg, GPU experimental"
 git push
 ```
+
+## Ограничения
+
+- `termux-sensor` недоступен в Play Store-версии Termux
+- GPU требует OpenCL-совместимый Mali/Adreno GPU и драйверы
